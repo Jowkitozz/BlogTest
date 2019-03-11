@@ -49,6 +49,23 @@ export class UserService {
   }
 
 
+  /**
+   * Supprime un utilisateur 
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async delete(email: string): Promise<boolean> {
+    const userDB = await this.getByEmail(email);
+    if (userDB) {
+      this.userRepository.remove([userDB]);
+      return true;
+    }
+    return false;
+  }
+
+
+
     /**
    * Effectue la connexion d'un utilisateur
    *

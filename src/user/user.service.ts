@@ -45,4 +45,22 @@ export class UserService {
     }
     return false;
   }
+
+    /**
+   * Récupère les informations d'un utilisateur après sa connexion
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async getInfo(user: any): Promise<User> {
+    const userDB = await this.getByEmail(user.email);
+    if (userDB) {
+      if (user.password === userDB.password) {
+        return this.getByEmail(user.email);
+      }
+      return null;
+    }
+    return null;
+  }
+
 }

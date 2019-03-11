@@ -26,6 +26,9 @@ export class User {
   @Column({ type: "varchar", name: "password" })
   password: string;
 
+  @Column({ type: "varchar", name: "admin" })
+  admin: boolean;
+
   @UpdateDateColumn()
   updated: Date;
   @PrimaryGeneratedColumn("uuid", { name: "user_id" })

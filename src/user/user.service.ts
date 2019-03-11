@@ -52,16 +52,44 @@ export class UserService {
   /**
    * Supprime un utilisateur 
    *
-   * @param user - user id
+   * @param email - user id
    * @returns Resolves with User
    */
   async delete(email: string): Promise<boolean> {
     const userDB = await this.getByEmail(email);
-    if (userDB) {
+    const userDBAdmin = await this.getAdmin(email);
+    if (userDB && userDBAdmin) {
       this.userRepository.remove([userDB]);
       return true;
     }
     return false;
+  }
+
+
+    /**
+   * Retourne la liste des utilisateurs
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async userList(user: any): Promise<boolean> {
+    const userDBAdmin = await this.getAdmin(email);
+    if (userDBAdmin) {
+      this.userRepository.findAll( attribute: ['id','firstName','lastName','admin'] );
+      return true;
+    }
+    return false;
+  }
+
+
+      /**
+   * Vérifie si l'utilisateur est bien un admin
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async getAdmin(user: any): Promise<boolean> {
+    return this.userRepository.findOne({ where: { admin : 'true', email: this.getByEmail} });
   }
 
 

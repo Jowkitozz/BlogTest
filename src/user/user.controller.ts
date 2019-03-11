@@ -58,4 +58,17 @@ export class UserController {
   async getByEmail(@Param("email") email: string) {
     return this.userService.getByEmail(email);
   }
+
+  @Post(":delete")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Supprimé"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas supprimé"
+  })
+  async delete(@Body("email") email: string) {
+    return this.userService.delete(email);
+  }
 }

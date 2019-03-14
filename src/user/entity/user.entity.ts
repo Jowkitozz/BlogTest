@@ -8,6 +8,9 @@ import {
 
 @Entity()
 export class User {
+  @Column({ type: "boolean", name: "admin" })
+  admin: boolean;
+
   @CreateDateColumn()
   created: Date;
 
@@ -25,9 +28,6 @@ export class User {
 
   @Column({ type: "varchar", name: "password" })
   password: string;
-
-  @Column({ type: "varchar", name: "admin" })
-  admin: boolean;
 
   @UpdateDateColumn()
   updated: Date;

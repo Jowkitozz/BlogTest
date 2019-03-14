@@ -1,4 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { truncate } from "fs";
 import { Repository } from "typeorm";
 import { User } from "./entity/user.entity";
 import { UserRepository } from "./user.repository";
@@ -10,17 +11,33 @@ export class UserService {
   ) {}
 
   /**
-   * Returns a user identified by its id
+   * Supprime un utilisateur
    *
-   * @param id - user id
+   * @param email - user id
    * @returns Resolves with User
    */
-  async getById(id: string) {
-    return this.userRepository.findOne(id);
+  async delete(email: string): Promise<boolean> {
+    const userDB = await this.userRepository.findOne({ where: { email } });
+    if (userDB) {
+      this.userRepository.remove([userDB]);
+      return true;
+    }
+    return false;
   }
 
+  /**
+   * Vérifie si l'utilisateur est bien un admin
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async getAdmin(email: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { admin: true, email }
+    });
+  }
 
-    /**
+  /**
    * Récupère les informations d'un utilisateur grâce à son email
    *
    * @param email - user id
@@ -30,43 +47,34 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
+  /**
+   * Returns a user identified by its id
+   *
+   * @param id - user id
+   * @returns Resolves with User
+   */
+  async getById(id: string) {
+    return this.userRepository.findOne(id);
+  }
 
-    /**
+  /**
    * Récupère les informations d'un utilisateur après sa connexion
    *
    * @param user - user id
    * @returns Resolves with User
    */
-  async getInfo(user: any): Promise<User> {
+  async getInfo(user: any) {
     const userDB = await this.getByEmail(user.email);
     if (userDB) {
       if (user.password === userDB.password) {
-        return this.getByEmail(user.email);
+        return this.userRepository.findOne({ where: { email: user.email } });
       }
       return null;
     }
     return null;
   }
 
-
   /**
-   * Supprime un utilisateur 
-   *
-   * @param user - user id
-   * @returns Resolves with User
-   */
-  async delete(email: string): Promise<boolean> {
-    const userDB = await this.getByEmail(email);
-    if (userDB) {
-      this.userRepository.remove([userDB]);
-      return true;
-    }
-    return false;
-  }
-
-
-
-    /**
    * Effectue la connexion d'un utilisateur
    *
    * @param user - user
@@ -81,5 +89,19 @@ export class UserService {
       return false;
     }
     return false;
+  }
+
+  /**
+   * Retourne la liste des utilisateurs si administrateur
+   *
+   * @param user - user id
+   * @returns Resolves with User
+   */
+  async userList(email: string) {
+    const userDBAdmin = await this.getAdmin(email);
+    if (userDBAdmin) {
+      return this.userRepository.find();
+    }
+    return "Vous n'êtes pas un administrateur";
   }
 }

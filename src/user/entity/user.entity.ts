@@ -8,6 +8,9 @@ import {
 
 @Entity()
 export class User {
+  @Column({ type: "boolean", name: "admin" })
+  admin: boolean;
+
   @CreateDateColumn()
   created: Date;
 

@@ -1,49 +1,36 @@
-import { Body, Controller, Get, HttpStatus, Param } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, Post } from "@nestjs/common";
 import { ApiResponse, ApiUseTags } from "@nestjs/swagger";
 import { UserService } from "./user.service";
 
 @ApiUseTags("User")
 @Controller("user")
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-  @Get(":id")
+  @Post("delete/:delete")
   @ApiResponse({
     status: HttpStatus.OK,
-    description: "User trouvé et retourné"
+    description: "Supprimé"
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: "User trouvé et retourné"
+    description: "Pas supprimé"
   })
-  async getById(@Param("id") id: string) {
-    return this.userService.getById(id);
+  async delete(@Body("email") email: string) {
+    return this.userService.delete(email);
   }
 
-  @Post(":loginInfo")
+  @Get("admin/:email")
   @ApiResponse({
     status: HttpStatus.OK,
-    description: "Connecté"
+    description: "admin"
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: "Pas connecté"
+    description: "Pas admin"
   })
-  async getInfo(@Body() user: any) {
-    return this.userService.getInfo(user);
-  }
-
-  @Post(":login")
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: "Connecté"
-  })
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-    description: "Pas connecté"
-  })
-  async login(@Body() user: any) {
-    return this.userService.login(user);
+  async getAdmin(@Param("email") email: string) {
+    return this.userService.getAdmin(email);
   }
 
   @Get("findEmail/:email")
@@ -59,16 +46,55 @@ export class UserController {
     return this.userService.getByEmail(email);
   }
 
-  @Post(":delete")
+  @Get(":id")
   @ApiResponse({
     status: HttpStatus.OK,
-    description: "Supprimé"
+    description: "User trouvé et retourné"
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: "Pas supprimé"
+    description: "User trouvé et retourné"
   })
-  async delete(@Body("email") email: string) {
-    return this.userService.delete(email);
+  async getById(@Param("id") id: string) {
+    return this.userService.getById(id);
+  }
+
+  @Post("loginInfo/:loginInfo")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Connecté"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas connecté"
+  })
+  async getInfo(@Body() user: any) {
+    return this.userService.getInfo(user);
+  }
+
+  @Post("login/:login")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Connecté"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas connecté"
+  })
+  async login(@Body() user: any) {
+    return this.userService.login(user);
+  }
+
+  @Get("list/:email")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Connecté"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas connecté"
+  })
+  async userList(@Param("email") email: string) {
+    return this.userService.userList(email);
   }
 }

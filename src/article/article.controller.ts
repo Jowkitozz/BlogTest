@@ -1,19 +1,41 @@
-import { Body, Controller, HttpStatus, Param, Post, Res } from "@nestjs/common";
-import { ApiResponse } from "@nestjs/swagger";
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Res
+} from "@nestjs/common";
+import { ApiResponse, ApiUseTags } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
 
+@ApiUseTags("Article")
 @Controller("article")
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post(":delete")
+  @Get("article/:author")
   @ApiResponse({
     status: HttpStatus.OK,
-    description: "Supprimé"
+    description: "OK"
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: "Pas supprimé"
+    description: "Pas OK"
+  })
+  async getArticle(@Param("author") author: string) {
+    return this.articleService.getArticle(author);
+  }
+
+  @Post(":id")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "OK"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas OK"
   })
   async getById(@Param("id") id: string) {
     return this.articleService.getById(id);

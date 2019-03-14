@@ -13,7 +13,7 @@ export class UserService {
   /**
    * Supprime un utilisateur
    *
-   * @param email - user id
+   * @param user - user email
    * @returns Resolves with User
    */
   async delete(email: string): Promise<boolean> {
@@ -28,7 +28,7 @@ export class UserService {
   /**
    * Vérifie si l'utilisateur est bien un admin
    *
-   * @param user - user id
+   * @param user - user email
    * @returns Resolves with User
    */
   async getAdmin(email: string): Promise<User> {
@@ -60,7 +60,7 @@ export class UserService {
   /**
    * Récupère les informations d'un utilisateur après sa connexion
    *
-   * @param user - user id
+   * @param user - user 
    * @returns Resolves with User
    */
   async getInfo(user: any) {
@@ -114,7 +114,7 @@ export class UserService {
   /**
    * Retourne la liste des utilisateurs si administrateur
    *
-   * @param user - user id
+   * @param user - user email
    * @returns Resolves with User
    */
   async userList(email: string) {

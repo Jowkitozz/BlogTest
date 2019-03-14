@@ -72,6 +72,19 @@ export class UserController {
     return this.userService.getInfo(user);
   }
 
+  @Post("update/:update")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "Modifié"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas modifié"
+  })
+  async getUpdate(@Body() user: any) {
+    return this.userService.getUpdate(user);
+  }
+
   @Post("login/:login")
   @ApiResponse({
     status: HttpStatus.OK,

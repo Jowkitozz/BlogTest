@@ -75,6 +75,26 @@ export class UserService {
   }
 
   /**
+   * Effectue la modification d'un utilisateur
+   *
+   * @param user - user
+   * @returns Resolves with User
+   */
+  async getUpdate(user: any): Promise<any> {
+    const userUpdate = await this.getByEmail(user.email);
+    if (userUpdate) {
+      userUpdate.firstName = user.firstName;
+      userUpdate.lastName = user.lastName;
+      userUpdate.mobilePhone = user.mobilePhone;
+      userUpdate.password = user.password;
+      userUpdate.updated = new Date(Date.now());
+      userUpdate.admin = user.admin;
+      return this.userRepository.save(userUpdate);
+    }
+    return "Aucun utilisateur présent dans la base de donnée.";
+  }
+
+  /**
    * Effectue la connexion d'un utilisateur
    *
    * @param user - user

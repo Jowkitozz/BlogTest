@@ -5,7 +5,7 @@ import { UserService } from "./user.service";
 @ApiUseTags("User")
 @Controller("user")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post("delete/:delete")
   @ApiResponse({
@@ -55,10 +55,9 @@ export class UserController {
     status: HttpStatus.NO_CONTENT,
     description: "User non trouvé"
   })
-  async getByEmail(@Param("email") email: string) {
-    return this.userService.getByEmail(email);
+  async getInfo(@Param("email") email: string) {
+    return this.userService.getInfo(email);
   }
-
 
   @Get(":id")
   @ApiResponse({

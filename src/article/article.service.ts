@@ -9,4 +9,14 @@ export class ArticleService {
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>
   ) {}
+
+  /**
+   * Returns a user identified by its id
+   *
+   * @param id - user id
+   * @returns Resolves with User
+   */
+  async getById(id: string) {
+    return this.articleRepository.findOne(id);
+  }
 }

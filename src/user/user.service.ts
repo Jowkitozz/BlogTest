@@ -10,17 +10,21 @@ export class UserService {
   ) {}
 
   /**
-   * Returns a user identified by its id
+   * Supprime un utilisateur
    *
-   * @param id - user id
+   * @param user - user id
    * @returns Resolves with User
    */
-  async getById(id: string) {
-    return this.userRepository.findOne(id);
+  async delete(email: string): Promise<boolean> {
+    const userDB = await this.getByEmail(email);
+    if (userDB) {
+      this.userRepository.remove([userDB]);
+      return true;
+    }
+    return false;
   }
 
-
-    /**
+  /**
    * Récupère les informations d'un utilisateur grâce à son email
    *
    * @param email - user id
@@ -30,8 +34,17 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
+  /**
+   * Returns a user identified by its id
+   *
+   * @param id - user id
+   * @returns Resolves with User
+   */
+  async getById(id: string) {
+    return this.userRepository.findOne(id);
+  }
 
-    /**
+  /**
    * Récupère les informations d'un utilisateur après sa connexion
    *
    * @param user - user id
@@ -48,25 +61,7 @@ export class UserService {
     return null;
   }
 
-
   /**
-   * Supprime un utilisateur 
-   *
-   * @param user - user id
-   * @returns Resolves with User
-   */
-  async delete(email: string): Promise<boolean> {
-    const userDB = await this.getByEmail(email);
-    if (userDB) {
-      this.userRepository.remove([userDB]);
-      return true;
-    }
-    return false;
-  }
-
-
-
-    /**
    * Effectue la connexion d'un utilisateur
    *
    * @param user - user

@@ -1,4 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { truncate } from "fs";
 import { Repository } from "typeorm";
 import { User } from "./entity/user.entity";
 import { UserRepository } from "./user.repository";
@@ -16,8 +17,7 @@ export class UserService {
    * @returns Resolves with User
    */
   async delete(email: string): Promise<boolean> {
-    const userDB = await this.getByEmail(email);
-    // const userDBAdmin = await this.getAdmin(email);
+    const userDB = await this.userRepository.findOne({ where: { email } });
     if (userDB) {
       this.userRepository.remove([userDB]);
       return true;
@@ -31,11 +31,12 @@ export class UserService {
    * @param user - user id
    * @returns Resolves with User
    */
-  // async getAdmin(user: any): Promise<boolean> {
-  //   return this.userRepository.findOne({
-  //     where: { admin: "true", email: this.getByEmail }
-  //   });
-  // }
+  async getAdmin(email: string): Promise<boolean> {
+    this.userRepository.findOne({
+      where: { admin: "true", email }
+    });
+    return true;
+  }
 
   /**
    * Récupère les informations d'un utilisateur grâce à son email
@@ -67,7 +68,7 @@ export class UserService {
     const userDB = await this.getByEmail(user.email);
     if (userDB) {
       if (user.password === userDB.password) {
-        return "y";
+        return this.userRepository.findOne({ where: { email: user.email } });
       }
       return null;
     }
@@ -80,17 +81,15 @@ export class UserService {
    * @param user - user
    * @returns Resolves with User
    */
-  async login(user: any) {
+  async login(user: any): Promise<boolean> {
     const userDB = await this.getByEmail(user.email);
-    // tslint:disable-next-line:no-console
-    console.log(userDB);
     if (userDB) {
       if (user.password === userDB.password) {
-        return "trededededue";
+        return true;
       }
-      return "faedededlse";
+      return false;
     }
-    return "faedededlse";
+    return false;
   }
 
   /**
@@ -99,12 +98,11 @@ export class UserService {
    * @param user - user id
    * @returns Resolves with User
    */
-  // async userList(user: any): Promise<boolean> {
-  //   const userDBAdmin = await this.getAdmin(email);
-  //   if (userDBAdmin) {
-  //     this.userRepository.findAll(attribute: ["id", "firstName", "lastName", "admin"]);
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  async userList(email: string) {
+    const userDBAdmin = await this.getAdmin(email);
+    if (userDBAdmin) {
+      return this.userRepository.find();
+    }
+    return "non";
+  }
 }

@@ -31,11 +31,10 @@ export class UserService {
    * @param user - user id
    * @returns Resolves with User
    */
-  async getAdmin(email: string): Promise<boolean> {
-    this.userRepository.findOne({
-      where: { admin: "true", email }
+  async getAdmin(email: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { admin: true, email }
     });
-    return true;
   }
 
   /**
@@ -93,7 +92,7 @@ export class UserService {
   }
 
   /**
-   * Retourne la liste des utilisateurs
+   * Retourne la liste des utilisateurs si administrateur
    *
    * @param user - user id
    * @returns Resolves with User
@@ -103,6 +102,6 @@ export class UserService {
     if (userDBAdmin) {
       return this.userRepository.find();
     }
-    return "non";
+    return "Vous n'êtes pas un administrateur";
   }
 }

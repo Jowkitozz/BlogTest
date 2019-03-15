@@ -17,12 +17,12 @@ export class ArticleService {
    * @returns Resolves with User
    */
   async getArticle(author: string) {
-    this.articleRepository.findOne({ where: { Auteur: author } });
+    this.articleRepository.findOne({ where: { author } });
     return this.articleRepository.find();
   }
 
   /**
-   * Affiche tout les articles
+   * Affiche un article
    *
    * @param id - user id
    * @returns Resolves with User
@@ -39,5 +39,15 @@ export class ArticleService {
    */
   async getById(id: string) {
     return this.articleRepository.findOne(id);
+  }
+
+  /**
+   * Ajoute un nouvel article
+   *
+   * @param id - user id
+   * @returns Resolves with User
+   */
+  async getNewArticle(article: any) {
+    return this.articleRepository.save(article);
   }
 }

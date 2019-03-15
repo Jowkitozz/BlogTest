@@ -53,4 +53,17 @@ export class ArticleController {
   async getById(@Param("id") id: string) {
     return this.articleService.getById(id);
   }
+
+  @Post("articleNew/:article")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "OK"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas OK"
+  })
+  async getNewArticle(@Body() article: any) {
+    return this.articleService.getNewArticle(article);
+  }
 }

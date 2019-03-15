@@ -28,6 +28,19 @@ export class ArticleController {
     return this.articleService.getArticle(author);
   }
 
+  @Get("articleId/:id")
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: "OK"
+  })
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: "Pas OK"
+  })
+  async getArticleById(@Param("id") id: string) {
+    return this.articleService.getArticleById(id);
+  }
+
   @Post(":id")
   @ApiResponse({
     status: HttpStatus.OK,

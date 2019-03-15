@@ -22,6 +22,16 @@ export class ArticleService {
   }
 
   /**
+   * Affiche tout les articles
+   *
+   * @param id - user id
+   * @returns Resolves with User
+   */
+  async getArticleById(id: string) {
+    return this.articleRepository.findOne({ where: { id } });
+  }
+
+  /**
    * Returns a user identified by its id
    *
    * @param id - user id
